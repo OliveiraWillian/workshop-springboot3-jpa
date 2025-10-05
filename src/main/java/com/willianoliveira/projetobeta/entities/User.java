@@ -19,7 +19,7 @@ public class User implements Serializable {
     private String phone;
     private String password;
     //Relacionamento
-    @JsonIgnore
+
     @OneToMany(mappedBy = "client")
     private Set<Order> orders = new HashSet<>();
 

@@ -1,6 +1,7 @@
 package com.willianoliveira.projetobeta.config;
 
 import com.willianoliveira.projetobeta.entities.*;
+import com.willianoliveira.projetobeta.enums.OrderStatus;
 import com.willianoliveira.projetobeta.repositories.CategoryRepository;
 import com.willianoliveira.projetobeta.repositories.OrderRepository;
 import com.willianoliveira.projetobeta.repositories.ProductRepository;
@@ -34,9 +35,9 @@ public class teste implements CommandLineRunner {
         userRepository.saveAll(Arrays.asList(u1,u2));
 
         //Pedido Registrado
-            Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1);
-            Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2);
-            Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1);
+            Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1, OrderStatus.PAID);
+            Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2,OrderStatus.WAITING_PAYMENT);
+            Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1,OrderStatus.WAITING_PAYMENT);
             orderRepository.saveAll(Arrays.asList(o1,o2,o3));
 
             //Categoria Criadas
@@ -52,10 +53,10 @@ public class teste implements CommandLineRunner {
             Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
             Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
             productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
-            
+
             //Payment
-            Payment pay = new Payment(null,Instant.now(),o1);
-            o1.setPayment(pay);
+            Payment pay1 = new Payment(null,Instant.parse("2019-06-23T13:02:55Z"),o1);
+            o1.setPayment(pay1);
             orderRepository.save(o1);
 
             //Producto Recebendo Categoria
