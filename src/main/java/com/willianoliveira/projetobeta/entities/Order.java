@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -17,15 +19,21 @@ public class Order implements Serializable {
     private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
-    private Integer OrderSatus;
-    //Relacionamento
+    private Integer orderStatus;
+    //Relacionamento User
     @ManyToOne()
-    @JsonIgnore
+
     @JoinColumn(name = "client_id")
     private User client;
-    //Relacionamento
+
+    //Relacionamento OrderItems
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
+
+    //Relacionamento Payment
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
+
 
     public Order() {
     }
@@ -34,7 +42,7 @@ public class Order implements Serializable {
         this.id = id;
         this.moment = moment;
         this.client = client;
-        setOrderSatus(orderStatus);
+        setOrderStatus(orderStatus);
     }
 
     public Long getId() {
@@ -53,12 +61,12 @@ public class Order implements Serializable {
         this.moment = moment;
     }
 
-    public OrderStatus getOrderSatus() {
-        return OrderStatus.getOrderStatus(OrderSatus);
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.getOrderStatus(orderStatus);
     }
 
-    public void setOrderSatus(OrderStatus orderSatus) {
-        OrderSatus = orderSatus.getCode();
+    public void setOrderStatus(OrderStatus orderSatus) {
+        orderStatus = orderSatus.getCode();
     }
 
     public User getClient() {
@@ -67,6 +75,10 @@ public class Order implements Serializable {
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
     public Payment getPayment() {
@@ -87,6 +99,15 @@ public class Order implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+    public Double getTotal() {
+        double sum = 0.0;
+        for(OrderItem item : items) {
+            sum += item.getSubTotal();
+        }
+        return sum;
+    }
+
+
 }
 
 

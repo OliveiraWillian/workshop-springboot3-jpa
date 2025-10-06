@@ -2,10 +2,7 @@ package com.willianoliveira.projetobeta.config;
 
 import com.willianoliveira.projetobeta.entities.*;
 import com.willianoliveira.projetobeta.enums.OrderStatus;
-import com.willianoliveira.projetobeta.repositories.CategoryRepository;
-import com.willianoliveira.projetobeta.repositories.OrderRepository;
-import com.willianoliveira.projetobeta.repositories.ProductRepository;
-import com.willianoliveira.projetobeta.repositories.UserRepository;
+import com.willianoliveira.projetobeta.repositories.*;
 import com.willianoliveira.projetobeta.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -26,6 +23,9 @@ public class teste implements CommandLineRunner {
     CategoryRepository categoryRepository;
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
         @Override
     public void run(String... args) throws Exception {
@@ -67,6 +67,12 @@ public class teste implements CommandLineRunner {
             p4.getCategories().add(cat3);
             p5.getCategories().add(cat2);
             productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+
+            OrderItem oi1 = new OrderItem(p1,o1,2,90.5);
+            OrderItem oi2 = new OrderItem(p3,o1,1,1250.0);
+            OrderItem oi3 = new OrderItem(p3,o2,2,1250.0);
+            OrderItem oi4 = new OrderItem(p5,o3,2,100.99);
+            orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
 
 
         }
