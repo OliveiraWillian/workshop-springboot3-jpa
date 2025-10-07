@@ -31,17 +31,20 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User update(User userUpdate, Long id) {
+
+
+    public User update(User userBody, Long id) {
         User userSql = userRepository.getReferenceById(id);
-        User userAtualizado = updatefuncao(userSql,userUpdate);
+        User userAtualizado = updatefuncao(userSql,userBody);
         return userAtualizado;
 
     }
 
-    private User updatefuncao(User userSql, User userUpdate) {
-        userSql.setName(userUpdate.getName());
-        userSql.setEmail(userUpdate.getEmail());
-        userSql.setPhone(userUpdate.getPhone());
+    private User updatefuncao(User userSql, User userBody) {
+        userSql.setName(userBody.getName());
+        userSql.setEmail(userBody.getEmail());
+        userSql.setPhone(userBody.getPhone());
+        userRepository.save(userSql);
         return userSql;
     }
 
