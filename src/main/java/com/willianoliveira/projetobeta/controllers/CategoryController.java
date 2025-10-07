@@ -5,6 +5,7 @@ import com.willianoliveira.projetobeta.entities.User;
 import com.willianoliveira.projetobeta.services.CategoryService;
 import com.willianoliveira.projetobeta.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,14 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public List<Category> findAll() {
-        return categoryService.findAll();
+    public ResponseEntity<List<Category>> findAll() {
+        List<Category> categoryList = categoryService.findAll();
+        return ResponseEntity.ok().body(categoryList);
     }
 
     @GetMapping(value = "/{id}")
-    public Category findById(@PathVariable Long id) {
-        return categoryService.findById(id);
+    public ResponseEntity<Category> findById(@PathVariable Long id) {
+        Category categorySelect = categoryService.findById(id);
+        return ResponseEntity.ok().body(categorySelect);
     }
 }
