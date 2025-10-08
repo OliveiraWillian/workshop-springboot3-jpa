@@ -1,5 +1,6 @@
 package com.willianoliveira.projetobeta.controllers;
 
+import com.willianoliveira.projetobeta.dto.OrderDTO;
 import com.willianoliveira.projetobeta.entities.Order;
 import com.willianoliveira.projetobeta.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,14 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping
-    public ResponseEntity<List<Order>> findAll(){
-        List<Order> orderList = orderService.findAll();
+    public ResponseEntity<List<OrderDTO>> findAll() {
+        List<OrderDTO> orderList = orderService.findAll();
         return ResponseEntity.ok().body(orderList);
     }
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> findById(@PathVariable Long id){
-        Order orderSelect = orderService.findById(id);
+    public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
+        OrderDTO orderSelect = orderService.findById(id);
         return ResponseEntity.ok().body(orderSelect);
     }
 }

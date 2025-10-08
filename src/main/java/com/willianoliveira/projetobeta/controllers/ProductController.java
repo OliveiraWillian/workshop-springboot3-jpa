@@ -1,5 +1,6 @@
 package com.willianoliveira.projetobeta.controllers;
 
+import com.willianoliveira.projetobeta.dto.ProductDTO;
 import com.willianoliveira.projetobeta.entities.Product;
 import com.willianoliveira.projetobeta.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,13 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> findAll(){
-        List<Product> productList = productService.findAll();
+    public ResponseEntity<List<ProductDTO>> findAll(){
+        List<ProductDTO> productList = productService.findAll();
         return ResponseEntity.ok().body(productList);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Product> findById(@PathVariable Long id){
-        Product productSelect = productService.findById(id);
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id){
+        ProductDTO productSelect = productService.findById(id);
         return ResponseEntity.ok().body(productSelect);
     }
 }

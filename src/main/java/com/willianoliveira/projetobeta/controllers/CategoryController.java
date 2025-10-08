@@ -1,5 +1,6 @@
 package com.willianoliveira.projetobeta.controllers;
 
+import com.willianoliveira.projetobeta.dto.CategoryDTO;
 import com.willianoliveira.projetobeta.entities.Category;
 import com.willianoliveira.projetobeta.entities.User;
 import com.willianoliveira.projetobeta.services.CategoryService;
@@ -21,14 +22,14 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
-        List<Category> categoryList = categoryService.findAll();
+    public ResponseEntity<List<CategoryDTO>> findAll() {
+        List<CategoryDTO> categoryList = categoryService.findAll();
         return ResponseEntity.ok().body(categoryList);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Category> findById(@PathVariable Long id) {
-        Category categorySelect = categoryService.findById(id);
+    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
+        CategoryDTO categorySelect = categoryService.findById(id);
         return ResponseEntity.ok().body(categorySelect);
     }
 }

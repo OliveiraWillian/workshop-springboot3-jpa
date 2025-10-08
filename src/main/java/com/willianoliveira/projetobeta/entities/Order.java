@@ -2,8 +2,10 @@ package com.willianoliveira.projetobeta.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.willianoliveira.projetobeta.dto.OrderDTO;
 import com.willianoliveira.projetobeta.enums.OrderStatus;
 import jakarta.persistence.*;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -44,6 +46,10 @@ public class Order implements Serializable {
         this.client = client;
         setOrderStatus(orderStatus);
     }
+    public Order(OrderDTO dto) {
+        BeanUtils.copyProperties(dto, this);
+    }
+
 
     public Long getId() {
         return id;
@@ -89,6 +95,15 @@ public class Order implements Serializable {
         this.payment = payment;
     }
 
+    public Double getTotal() {
+        double sum = 0.0;
+        for(OrderItem item : items) {
+            sum += item.getSubTotal();
+        }
+        return sum;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Order order)) return false;
@@ -99,13 +114,7 @@ public class Order implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
-    public Double getTotal() {
-        double sum = 0.0;
-        for(OrderItem item : items) {
-            sum += item.getSubTotal();
-        }
-        return sum;
-    }
+
 
 
 }

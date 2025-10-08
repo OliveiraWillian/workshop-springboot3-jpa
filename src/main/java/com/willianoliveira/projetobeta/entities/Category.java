@@ -1,7 +1,9 @@
 package com.willianoliveira.projetobeta.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.willianoliveira.projetobeta.dto.CategoryDTO;
 import jakarta.persistence.*;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -24,6 +26,10 @@ public class Category implements Serializable {
         this.id = id;
         this.name = name;
     }
+    public Category(CategoryDTO dto) {
+       BeanUtils.copyProperties(dto, this);
+    }
+
 
     public Category() {
     }

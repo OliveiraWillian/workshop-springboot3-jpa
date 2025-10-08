@@ -1,7 +1,9 @@
 package com.willianoliveira.projetobeta.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.willianoliveira.projetobeta.dto.UserDTO;
 import jakarta.persistence.*;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -33,6 +35,9 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.password = password;
+    }
+    public User(UserDTO dto) {
+        BeanUtils.copyProperties(dto, this);
     }
 
     public Long getId() {

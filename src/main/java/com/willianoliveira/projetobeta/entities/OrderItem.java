@@ -61,6 +61,13 @@ public class OrderItem {
         id.setOrder(order);
     }
 
+    public OrderItemPK getId() {
+        return id;
+    }
+
+    public void setId(OrderItemPK id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,11 @@
 package com.willianoliveira.projetobeta.services;
 
+import com.willianoliveira.projetobeta.dto.UserDTO;
+import com.willianoliveira.projetobeta.dto.UserDTO;
+import com.willianoliveira.projetobeta.dto.UserDTO;
+import com.willianoliveira.projetobeta.entities.User;
+import com.willianoliveira.projetobeta.entities.User;
+import com.willianoliveira.projetobeta.entities.User;
 import com.willianoliveira.projetobeta.entities.User;
 import com.willianoliveira.projetobeta.exceptions.DatabaseException;
 import com.willianoliveira.projetobeta.exceptions.ResourceNotFoundException;
@@ -14,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -21,56 +28,56 @@ public class UserService {
     private UserRepository userRepository;
 
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDTO> findAll() {
+        List<User> entity = userRepository.findAll();
+        List<UserDTO> listDTO = entity.stream()
+                .map(UserDTO::new)
+                .collect(Collectors.toList());
+        return listDTO;
     }
 
-    public User findById(Long id) {
-
-            Optional<User> userOptional = userRepository.findById(id);
-            User userSelect = userOptional.orElseThrow(() -> new ResourceNotFoundException(id));
-            return userSelect;
-
+    public UserDTO findById(Long id) {
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.orElseThrow(() -> new ResourceNotFoundException(id));
+        UserDTO userDTO = new UserDTO(user);
+        return userDTO;
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
-    }
 
 
     public void delete(Long id) {
 
-            if(!userRepository.findById(id).isPresent()) {
-                throw new ResourceNotFoundException(id);
-            }
-            try {
-                userRepository.deleteById(id);
-            }catch (DataIntegrityViolationException e) {
-                throw new DatabaseException(e.getMessage());
-            }
+        if (!userRepository.findById(id).isPresent()) {
+            throw new ResourceNotFoundException(id);
+        }
+        try {
+            userRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+    }
 
-
-
+    public UserDTO save(UserDTO dto) {
+        User entity = new User(dto);
+        User saved = userRepository.save(entity);
+        return new UserDTO(saved);
     }
 
 
-    public User update(User userBody, Long id) {
+    public UserDTO update(UserDTO userBody, Long id) {
         try {
-            User userSql = userRepository.getReferenceById(id);
-            User userAtualizado = updatefuncao(userSql, userBody);
-            return userRepository.save(userAtualizado);
+            User entity = userRepository.getReferenceById(id);
+            updatefuncao(entity, userBody);
+            User saved = userRepository.save(entity);
+            return new UserDTO(saved);
+
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException(id);
         }
-
     }
-
-    private User updatefuncao(User userSql, User userBody) {
-        userSql.setName(userBody.getName());
-        userSql.setEmail(userBody.getEmail());
-        userSql.setPhone(userBody.getPhone());
-
-        return userSql;
+    private void updatefuncao(User entity, UserDTO userBody) {
+        entity.setName(userBody.getName());
+        entity.setEmail(userBody.getEmail());
+        entity.setPhone(userBody.getPhone());
     }
-
 }

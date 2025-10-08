@@ -1,7 +1,10 @@
 package com.willianoliveira.projetobeta.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.willianoliveira.projetobeta.dto.OrderDTO;
+import com.willianoliveira.projetobeta.dto.ProductDTO;
 import jakarta.persistence.*;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -34,6 +37,10 @@ public class Product implements Serializable {
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
+    }
+
+    public Product(ProductDTO dto) {
+        BeanUtils.copyProperties(dto, this);
     }
 
     public Long getId() {
